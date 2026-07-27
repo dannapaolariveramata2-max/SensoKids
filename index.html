@@ -180,63 +180,6 @@
             fill: currentColor;
         }
 
-        .speak-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: none;
-            background: #ffd93d;
-            color: #333;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: fadeInUp 1s ease 1.5s both;
-        }
-
-        .speak-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
-        }
-
-        .speak-btn.speaking {
-            background: #ff6b6b;
-            color: #fff;
-            animation: pulse 1s infinite;
-        }
-
-        .speak-btn svg {
-            width: 28px;
-            height: 28px;
-            fill: currentColor;
-        }
-
-        .speak-tooltip {
-            position: fixed;
-            bottom: 100px;
-            right: 25px;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            z-index: 100;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .speak-btn:hover + .speak-tooltip {
-            opacity: 1;
-        }
-
         /* Floating shapes */
         .shapes {
             position: fixed;
@@ -409,11 +352,6 @@
         <div class="shape shape-6"></div>
     </div>
 
-    <button class="speak-btn" id="speakBtn" aria-label="Leer pagina">
-        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-    </button>
-    <div class="speak-tooltip">Leer contenido</div>
-
     <div class="container">
         <div class="logo">Sens<span>o</span>Kids</div>
         <p class="subtitle">Estimulacion sensorial para los mas pequenos</p>
@@ -503,41 +441,6 @@
                 button.style.color = '#333';
             }, 3000);
         });
-
-        const speakBtn = document.getElementById('speakBtn');
-        let speaking = false;
-
-        speakBtn.addEventListener('click', function() {
-            if (speaking) {
-                speechSynthesis.cancel();
-                speaking = false;
-                this.classList.remove('speaking');
-                return;
-            }
-
-            const container = document.querySelector('.container');
-            const text = container.innerText;
-
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'es-ES';
-            utterance.rate = 1;
-            utterance.pitch = 1;
-
-            const voices = speechSynthesis.getVoices();
-            const spanishVoice = voices.find(v => v.lang.startsWith('es'));
-            if (spanishVoice) utterance.voice = spanishVoice;
-
-            utterance.onend = function() {
-                speaking = false;
-                speakBtn.classList.remove('speaking');
-            };
-
-            speaking = true;
-            speakBtn.classList.add('speaking');
-            speechSynthesis.speak(utterance);
-        });
-
-        speechSynthesis.onvoiceschanged = function() {}; 
     </script>
 </body>
 </html>
